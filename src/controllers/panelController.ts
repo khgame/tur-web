@@ -1,5 +1,5 @@
 import {Get, JsonController} from "routing-controllers";
-import {genLogger, Logger} from "@khgame/turtle/lib";
+import {genLogger, Logger} from "@khgame/turtle";
 
 import {SampleWorker} from "../workers";
 
