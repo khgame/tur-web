@@ -1,16 +1,14 @@
 import {genLogger, genMemCache, IWorker, Worker, WorkerRunningState, Logger, IMemCache} from "@khgame/turtle";
-import {scheduleJob} from "node-schedule"
+import {scheduleJob} from "node-schedule";
 import {forMs} from "kht/lib";
 
 export class SampleWorker extends Worker implements IWorker {
-
-    public log : Logger= genLogger("worker:dau");
 
     static inst: SampleWorker;
 
     public readonly cache: IMemCache = genMemCache();
 
-    constructor( ) {
+    constructor() {
         super("sample");
         SampleWorker.inst = this;
         this.runningState = WorkerRunningState.PREPARED;
@@ -18,7 +16,7 @@ export class SampleWorker extends Worker implements IWorker {
 
     async onStart(): Promise<boolean> {
 
-        scheduleJob('0 3 * * * *', async () => { // every hour
+        scheduleJob("0 3 * * * *", async () => { // every hour
             await this.task();
         });
 
@@ -44,7 +42,7 @@ export class SampleWorker extends Worker implements IWorker {
             catch (e) {
                 this.log.error(`⊙ proc of worker ${this.name} error: ${e}, ${e.stack} `);
                 throw e;
-            }finally {
+            } finally {
                 this.processRunning -= 1;
             }
 
@@ -61,7 +59,7 @@ export class SampleWorker extends Worker implements IWorker {
         catch (e) {
             this.log.error(`⊙ task of worker ${this.name} error: ${e}, ${e.stack} `);
             throw e;
-        }finally {
+        } finally {
             this.processRunning -= 1;
         }
     }
