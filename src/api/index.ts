@@ -1,10 +1,8 @@
-import "reflect-metadata";
 import * as Koa from "koa";
 import { Context } from "koa";
 import { createServer, Server } from "http";
 import {genLogger, IApi, APIRunningState, CError, Logger} from "@khgame/turtle";
 import { Action } from "routing-controllers";
-import { Container } from "typedi";
 import { forCondition } from "kht/lib";
 import { CoreController } from "./core";
 
@@ -18,8 +16,9 @@ try {
     throw new Error("routing-controllers package was not found installed. Try to install it: npm install routing-controllers --save");
 }
 
-const { useContainer, useKoaServer } = routingControllers;
+const { useKoaServer } = routingControllers;
 
+export { MessageInterceptor } from "./messageInterceptor";
 export class Api implements IApi {
 
     runningState: APIRunningState;
@@ -39,7 +38,6 @@ export class Api implements IApi {
         protected middlewares?: Koa.Middleware[]
     ) {
         this.koa = new Koa();
-        useContainer(Container);
         this.server = createServer(this.koa.callback());
         this.init();
     }

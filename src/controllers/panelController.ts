@@ -1,14 +1,16 @@
-import {Get, JsonController} from "routing-controllers";
+import {Get, Post, JsonController, UseInterceptor} from "routing-controllers";
 import {genLogger, Logger} from "@khgame/turtle";
 
+import {MessageInterceptor} from "../api";
 import {SampleWorker} from "../workers";
 
+@UseInterceptor(MessageInterceptor)
 @JsonController("/panel")
-export class AccountController {
+export class PanelController {
 
     public log: Logger = genLogger("api:panel");
 
-    constructor() {
+    constructor(private readonly sampleWorker: SampleWorker) {
     }
 
     @Get("/info")
@@ -16,9 +18,9 @@ export class AccountController {
         return Math.floor((new Date()).getTime() / 3600000);
     }
 
-    @Get("/running_process")
+    @Post("/running_process")
     async getProcessRunning() {
-        return SampleWorker.inst.processRunning;
+        return this.sampleWorker.processRunning;
     }
 
 

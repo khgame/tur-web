@@ -1,16 +1,15 @@
 import {genLogger, genMemCache, IWorker, Worker, WorkerRunningState, Logger, IMemCache} from "@khgame/turtle";
 import {scheduleJob} from "node-schedule";
 import {forMs} from "kht/lib";
+import {Service} from "typedi";
 
-export class SampleWorker extends Worker implements IWorker {
-
-    static inst: SampleWorker;
+@Service()
+export class SampleWorker extends Worker implements IWorker { 
 
     public readonly cache: IMemCache = genMemCache();
 
     constructor() {
-        super("sample");
-        SampleWorker.inst = this;
+        super("sample"); 
         this.runningState = WorkerRunningState.PREPARED;
     }
 
